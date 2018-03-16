@@ -1,0 +1,13 @@
+PROG=	test
+OBJS=	one.o main.o two.o three.o
+
+#CFLAGS=	-Wall -g
+
+all: ${PROG}
+
+${PROG}: ${OBJS}		#check dependencies in OBJS
+	@echo $@ depends on $?  #display dependiencies
+	${CC} ${LDFLAGS} ${OBJS} -o ${PROG} # compile with specific name 
+ 
+clean:
+	rm -f ls *.o #remove things ends with .o

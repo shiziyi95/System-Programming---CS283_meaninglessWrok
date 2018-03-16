@@ -1,0 +1,28 @@
+8.11
+	the program prints hello 4 timmes,
+	fork looped total 2 times there for 2+ 2 = 4
+
+8.12
+	the program prints hello 8 timmes,
+	2^3
+
+8.13
+	x=4
+	x=3
+	x=2
+	fork first does ++x
+	then fork does nothing thus x=3
+	then does the line 10 x =2
+
+8.14
+	hello
+	$hello
+	hello
+	child is triggered and prints two hello, then themain program prints hellpo
+
+8.16
+	counter = 2
+	when fork is triggerd coutner = counter -1
+
+8.23
+	only parent prcess count child process as signal, it increments when child is born.counter counts  when a child is died.  handler blocks rest of signals when proceing one signal. Thus they are pending, thus there is a bug.

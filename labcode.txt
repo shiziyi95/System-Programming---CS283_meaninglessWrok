@@ -1,0 +1,160 @@
+//
+//  main.c
+//  HW4
+//
+//  Created by Ziyi Shi on 2/22/17.
+//  Copyright © 2017 Ziyi. All rights reserved.
+//
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <stdlib.h>
+#include <string.h>
+
+void process(FILE *fp, char *argv1, char *argv2, char *argv3, char filename[64]);
+
+int main(int argc, char * argv[]) {
+    
+    DIR *dp; //directory pointer
+    dp = opendir ("./");    //open current directory
+    struct dirent *ep;
+    FILE *fptr;
+    int i = 0;
+    char filename[64];
+    char *argv1 = "1st";
+    char *argv2 = "turn!";
+    char *argv3 = "here";
+    
+    
+    if (dp != NULL)
+    {
+        while ((ep = readdir(dp)))
+        {
+            if (!strcmp (ep->d_name, "."))
+                continue;
+            if (!strcmp (ep->d_name, ".."))
+                continue;
+            if (!strcmp (ep->d_name, "a.out"))
+                continue;
+            i++;
+            strcpy(filename, ep->d_name);
+            
+            if ( (!strcmp (ep->d_name, "main.c")) || (!strcmp (ep->d_name, "a.out")))
+            {
+                printf("%s\n", filename);
+                fptr = fopen(filename, "r");
+                process(fptr, argv1, argv2, argv3, filename);
+                fflush(fptr);
+            }
+        }
+        (void) closedir(dp);
+    }
+    strcpy(filename, "dumb.txt");
+    fptr = fopen(filename, "r");
+    process(fptr, argv1, argv2, argv3, filename);
+
+    return 0;
+    
+}
+
+
+void process(FILE *fp, char *argv1, char *argv2, char *argv3, char filename[64])
+{
+    char buf[256], *target_file;
+    FILE *target; //two file pointer
+    char *pch;
+    char argv1_end_of_line[64],argv2_end_of_line[64],argv3_end_of_line[64];
+    strcpy(argv1_end_of_line, argv1);
+    strcpy(argv2_end_of_line, argv2);
+    strcpy(argv3_end_of_line, argv3);
+    strcat(argv1_end_of_line,"\n");
+    strcat(argv2_end_of_line,"\n");
+    strcat(argv3_end_of_line,"\n");
+    int count = 0;
+    
+    target_file = "tmp";
+    
+    target = fopen(target_file, "w");//open up target file
+    
+    while( fscanf(fp, "%s", buf) == 1)
+    {
+        if (strcmp(buf, argv1) == 0)
+        {
+            count ++; //count the occurance of argv1, i just want it
+        }
+    }
+    //printf("%d",count);
+    memset(buf, 0, 256); // empty memeory
+    fseek(fp, 0,SEEK_SET);// point back to the begging of file
+    
+    while( fgets(buf,64, fp)!= NULL)
+    {
+        //puts(lbuf);
+        pch = strtok(buf, " ,.-");
+        while(pch != NULL)
+        {
+            if(count > 0) // if case 1, argv1 exist
+            {
+                if ( strcmp( &pch[(strlen(pch)-1)],"\n") == 0 ) //cases when it its end of line
+                {
+                    if (strcmp(pch, argv1_end_of_line)==0)
+                    {
+                        fputs(argv2_end_of_line, target);
+                    }
+                }
+                if(strcmp(pch, argv1)==0) //if my buf mathcs argv1
+                {
+                    fputs(argv2, target);
+                    fputs(" ", target);
+                }
+                else
+                {
+                    //   printf("%s\n",pch);
+                    fputs(pch,target);
+                    fputs(" ", target);
+                }
+            }
+            else
+            {
+                if ( strcmp( &pch[(strlen(pch)-1)],"\n") == 0 ) //cases when it its end of line
+                {
+                    if (strcmp(pch, argv3_end_of_line)==0)
+                    {
+                        fputs(argv2, target);
+                        fputs(" ", target);
+                        fputs(pch, target);
+                    }
+                }
+                else
+                {
+                    fputs(" ",target);
+                }
+                if(strcmp(pch, argv3)==0) //if my buf mathcs argv3
+                {
+                    fputs(argv2, target);
+                    fputs(" ", target);
+                    fputs(pch,target);
+                    fputs(" ", target);
+                }
+                else
+                {
+                    fputs(pch,target);
+                    fputs(" ",target);
+                }
+                
+            }
+            
+            pch = strtok (NULL, " ,.-");//keep reading
+        }
+        
+    }
+    
+    
+    fclose(fp);
+    remove(filename); //going to passin the name stirng!!!!!!
+    fclose(target);
+    rename("tmp", filename);//going to passin the name stirng!!!!!!
+    
+}
+//need to do step 3, and concatenation. done

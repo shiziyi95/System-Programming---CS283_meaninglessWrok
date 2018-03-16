@@ -1,0 +1,15 @@
+PROG=	test
+OBJS=	one.o main.o two.o three.o
+#CFLAGS=	-Wall -g
+
+all: ${PROG}
+
+${PROG}: ${OBJS}
+	@echo $@ depends on $?		#check Depedencies
+	${CC} ${LDFLAGS} ${OBJS} -o ${PROG}	#copiles the files with specific name
+
+%.o: %.c ext.h one.h
+	$(CC) -c $(CFLAGS) -o $@ $<	#compile files as string with specific name to object file
+
+clean:
+	rm -f ${PROG} ${OBJS} 	#remove files in prog and OBJS

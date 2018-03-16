@@ -1,0 +1,15 @@
+PROG=	test
+OBJS=	one.o main.o two.o three.o
+CFLAGS=	-Wall -g
+
+all: ${PROG} 	#check all of PROG, which is test
+
+${PROG}: ${OBJS}  #check dependencies:one.o main.o two.o three.o
+	@echo $@ depends on $? 		# display dependencies:  one.o main.o two.o three.o
+	${CC} ${LDFLAGS} ${OBJS} -o ${PROG}  #compiles things in LDFLAGS OBJS, and name it as prog
+
+.c.o:
+	$(CC) -c $(CFLAGS) -o $@ $<  #compilee CFLAG string and name it
+	
+clean:
+	rm -f ${PROG} ${OBJS} #remove fiies in PROG and OBJS

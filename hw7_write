@@ -1,0 +1,25 @@
+1.
+Symnol	entry	type	module 	section
+buf	Yes	Extern	main.o	.data
+bufp0	Yes	global	swap.o	.data
+bufql	Yes	local	swap.o	.data
+swap	Yes	global	swap.o	.text
+temp	Yes	
+incre	No	local	swap.p	.text
+incr	No	local	swap.o	.text
+count	Yes	local	swap.o	.data
+
+
+2.
+Static double x;
+void f()
+{
+	x =-0.0;
+}
+
+in foo5.c the location of x y will be assaignnent as x = -0.0
+output will be x = 0x0  y= 0x800000000
+
+3.
+foo6.c contain p2() output:"0x55\n" and termniate
+

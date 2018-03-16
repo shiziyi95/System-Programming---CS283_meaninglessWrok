@@ -1,0 +1,23 @@
+etox.c
+line 45 this variable should be 1
+line 47 ++j, do plus 1 first
+
+  int fact = 1;
+
+  for (j = 1; j <= number; ++j)
+   {
+    fact = fact * j;
+   }
+
+g1.c
+kpoint 1 at 0x100000f06: file g1.c, line 7.
+(gdb) run
+Starting program: /Users/Elliot/Desktop/CS283/Lab2/gdb/a.out 
+Unable to find Mach task port for process-id 5959: (os/kern) failure (0x5).
+ (please check gdb is codesigned - see taskgated(8))
+ (gdb) quit
+
+g2.c
+line 9
+buf = malloc(sizeof(num));
+
